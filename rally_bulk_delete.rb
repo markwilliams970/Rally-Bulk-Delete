@@ -107,12 +107,21 @@ query_type = valid_query_types[start_artifact_type]
 
 puts "Connecting to Rally: #{$my_base_url} as #{$my_username}..."
 #==================== Make a connection to Rally ====================
+
+#Setting custom headers
+$headers                            = RallyAPI::CustomHttpHeader.new()
+$headers.name                       = "Ruby Rally Artifact Bulk Delete Utility"
+$headers.vendor                     = "Rally Labs"
+$headers.version                    = "0.50"
+$my_headers                         = $headers
+
 config                  = {:base_url => $my_base_url}
 config[:username]       = $my_username
 config[:password]       = $my_password
 config[:workspace]      = $my_workspace
 config[:project]        = $my_project
 config[:version]        = $wsapi_version
+config[:headers]        = $my_headers #from RallyAPI::CustomHttpHeader.new()
 
 @rally = RallyAPI::RallyRestJson.new(config)
 
