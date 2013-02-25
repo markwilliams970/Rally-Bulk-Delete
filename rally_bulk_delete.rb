@@ -159,9 +159,18 @@ artifact_query_results.each do | this_artifact |
   really_delete = [(print "Really delete? [Y/n]:"), gets.rstrip][1]
   
   if really_delete == affirmative_answer then
-    delete_result = @rally.delete(this_artifact["_ref"])
-    puts "DELETED #{artifact_formatted_id}: #{artifact_name}"
-    number_deleted += 1
+	begin
+		delete_result = @rally.delete(this_artifact["_ref"])
+		puts "DELETED #{artifact_formatted_id}: #{artifact_name}"
+		number_deleted += 1
+	rescue => ex
+		puts "Error occurred trying to delete: #{artifact_formatted_id}: #{artifact_name}"
+		puts ex
+		puts "Note that this error will occur if a Parent and Child are both specified in the Range of"
+		puts "input Formatted ID's. If the Parent is deleted before the Child, the Child item will"
+		puts "be deleted along with it, and the subsequent deletion attempt on the Child will fail"
+		puts "to find the Child Artifact. This is normal behavior and is a limitation of this script."
+	end
   else
     puts "Did NOT delete #{artifact_formatted_id}: #{artifact_name}."
   end
