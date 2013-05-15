@@ -54,7 +54,7 @@ end
 end_artifact_type = end_formatted_id[/[A-Z]+/]
 end_number_range = end_formatted_id[/\d+/]
 
-if start_artifact_type.nil? or start_number_range.nil? then
+if end_artifact_type.nil? or end_number_range.nil? then
   puts "Invalid ending FormattedID. Please use the format DE1234. Exiting."
   exit
 end
