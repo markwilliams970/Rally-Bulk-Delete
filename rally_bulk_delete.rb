@@ -155,7 +155,7 @@ puts "Start processing deletions..."
 
 number_processed = 0
 number_deleted = 0
-affirmative_answer = "Y"
+affirmative_answer = "y"
 
 artifact_query_results.each do | this_artifact |
   
@@ -165,9 +165,9 @@ artifact_query_results.each do | this_artifact |
   artifact_formatted_id = this_artifact["FormattedID"]
   artifact_name = this_artifact["Name"]
   puts "Deleting artifact #{artifact_formatted_id}: #{artifact_name}..."
-  really_delete = [(print "Really delete? [Y/n]:"), gets.rstrip][1]
+  really_delete = [(print "Really delete? [N/y]:"), gets.rstrip][1]
   
-  if really_delete == affirmative_answer then
+  if really_delete.downcase == affirmative_answer then
 	begin
 		delete_result = @rally.delete(this_artifact["_ref"])
 		puts "DELETED #{artifact_formatted_id}: #{artifact_name}"
