@@ -9,7 +9,7 @@
 
 # Usage: ruby rally_bulk_delete.rb
 # Specify the User-Defined variables below. Script will find and prompt user
-# to confirm deletion of all Rally Artifacts within a specified range of FormattedID's
+# to confirm deletion of all Rally Artifacts within a specified range of FormattedID's a
 
 require 'rally_api'
 
@@ -158,28 +158,28 @@ number_deleted = 0
 affirmative_answer = "y"
 
 artifact_query_results.each do | this_artifact |
-  
+
   number_processed += 1
   puts "Processing deletion for artifact #{number_processed} of #{number_of_artifacts}."
-  
+
   artifact_formatted_id = this_artifact["FormattedID"]
   artifact_name = this_artifact["Name"]
   puts "Deleting artifact #{artifact_formatted_id}: #{artifact_name}..."
   really_delete = [(print "Really delete? [N/y]:"), gets.rstrip][1]
-  
+
   if really_delete.downcase == affirmative_answer then
-	begin
-		delete_result = @rally.delete(this_artifact["_ref"])
-		puts "DELETED #{artifact_formatted_id}: #{artifact_name}"
-		number_deleted += 1
-	rescue => ex
-		puts "Error occurred trying to delete: #{artifact_formatted_id}: #{artifact_name}"
-		puts ex
-		puts "Note that this error will occur if a Parent and Child are both specified in the Range of"
-		puts "input Formatted ID's. If the Parent is deleted before the Child, the Child item will"
-		puts "be deleted along with it, and the subsequent deletion attempt on the Child will fail"
-		puts "to find the Child Artifact. This is normal behavior and is a limitation of this script."
-	end
+  begin
+    delete_result = @rally.delete(this_artifact["_ref"])
+    puts "DELETED #{artifact_formatted_id}: #{artifact_name}"
+    number_deleted += 1
+  rescue => ex
+    puts "Error occurred trying to delete: #{artifact_formatted_id}: #{artifact_name}"
+    puts ex
+    puts "Note that this error will occur if a Parent and Child are both specified in the Range of"
+    puts "input Formatted ID's. If the Parent is deleted before the Child, the Child item will"
+    puts "be deleted along with it, and the subsequent deletion attempt on the Child will fail"
+    puts "to find the Child Artifact. This is normal behavior and is a limitation of this script."
+  end
   else
     puts "Did NOT delete #{artifact_formatted_id}: #{artifact_name}."
   end
