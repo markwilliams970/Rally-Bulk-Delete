@@ -9,7 +9,7 @@
 
 # Usage: ruby rally_bulk_delete.rb
 # Specify the User-Defined variables below. Script will find and prompt user
-# to confirm deletion of all Rally Artifacts within a specified range of FormattedID's a
+# to confirm deletion of all Rally Artifacts within a specified range of FormattedID's
 
 require 'rally_api'
 
