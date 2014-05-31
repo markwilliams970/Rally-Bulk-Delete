@@ -36,8 +36,9 @@ def delete_rally_artifact(header, row)
 
   item_formatted_id               = row[header[0]].strip
   item_name                       = row[header[1]].strip
+  upcase_formatted_id             = item_formatted_id.upcase
 
-  artifact_prefix = item_formatted_id[/[A-Z]+/]
+  artifact_prefix = upcase_formatted_id[/[A-Z]+/]
   artifact_type   = $valid_query_types[artifact_prefix]
 
   if artifact_type.nil? then
