@@ -37,10 +37,21 @@ def delete_rally_artifact(header, row)
   item_formatted_id               = row[header[0]].strip
   item_name                       = row[header[1]].strip
 
+  artifact_prefix = item_formatted_id[/[A-Z]+/]
+  artifact_type   = $valid_query_types[artifact_prefix]
+
+  if artifact_type.nil? then
+    puts "Invalid artifact type specified in Formatted ID."
+    puts "Valid Formatted ID Prefix types include:"
+    puts "#{$valid_types}."
+    puts "Skipping #{item_formatted_id}"
+    return
+  end
+
   # Query Rally for item to delete
   # Lookup test case to move
   query = RallyAPI::RallyQuery.new()
-  query.type = :artifact
+  query.type = artifact_type
   query.fetch = "FormattedID,ObjectID,Name"
   query.query_string = "(FormattedID = \"" + item_formatted_id + "\")"
 
@@ -56,13 +67,13 @@ def delete_rally_artifact(header, row)
       if really_delete.downcase == affirmative_answer then
         delete_result = @rally.delete(item_to_delete["_ref"])
         puts "DELETED #{item_formatted_id}: #{item_name}"
+        @delete_count += 1
       else
         puts "Did NOT delete #{item_formatted_id}: #{item_name}."
       end
     rescue => ex
       puts "Error occurred trying to delete: #{item_formatted_id}: #{item_name}"
       puts ex
-      puts ex.msg
       puts ex.backtrace
     end
   end
@@ -87,6 +98,25 @@ begin
   config[:version]        = $wsapi_version
   config[:headers]        = $my_headers #from RallyAPI::CustomHttpHeader.new()
 
+  # Valid Artifact Types. Note that the following assumes
+  # Standard PI Types of Theme, Feature, and Initiative.
+  # If user has custom PI Types, the following list will need to be
+  # Customized to user environment
+  $standard_types = ["US", "DE", "TA", "TC"]
+  $pi_types = ["T", "I", "F"]
+
+  $valid_types = [$standard_types, $pi_types].flatten
+
+  $valid_query_types = {
+    "US" => :hierarchicalrequirement,
+    "DE" => :defect,
+    "TA" => :task,
+    "TC" => :testcase,
+    "F"  => "portfolioitem/feature",
+    "I"  => "portfolioitem/initiative",
+    "T"  => "portfolioitem/theme"
+  }
+
   @rally = RallyAPI::RallyRestJson.new(config)
 
   # Read in CSV worksheet of items that need deleting
@@ -102,12 +132,13 @@ begin
   # Proceed through rows in input CSV and delete  items contained therein
   puts "Deleting selected entries from Rally..."
 
+  @delete_count = 0
   rows.each do |row|
     delete_rally_artifact(header, row)
     number_processed += 1
   end
 
   puts
-  puts "Deleted a total of #{number_processed} Artifacts."
+  puts "Deleted a total of #{@delete_count} Artifacts."
   puts "Complete!"
 end
