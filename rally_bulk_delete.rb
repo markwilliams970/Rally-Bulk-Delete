@@ -19,7 +19,7 @@ $my_password        = "password"
 $my_workspace       = "My Workspace"
 $my_project         = "My Project"
 $project_scope_down = true
-$wsapi_version      = "1.40"
+$wsapi_version      = "v2.0"
 
 # Do not make changes to code below this line!!!
 ################################################

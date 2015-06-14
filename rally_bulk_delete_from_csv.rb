@@ -20,7 +20,7 @@ $my_password        = "password"
 $my_workspace       = "My Workspace"
 $my_project         = "My Project"
 $project_scope_down = true
-$wsapi_version      = "1.43"
+$wsapi_version      = "v2.0"
 $filename           = "items_to_delete.csv"
 
 # Do not make changes to code below this line!!!

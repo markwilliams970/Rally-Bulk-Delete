@@ -4,7 +4,7 @@ $my_password        = "topsecret"
 $my_workspace       = "My Workspace"
 $my_project         = "My Project"
 $project_scope_down = false
-$wsapi_version      = "1.43"
+$wsapi_version      = "v2.0"
 $filename           = "items_to_delete.csv"
 
 # Valid Artifact Types. Note that the following assumes
