@@ -9,8 +9,8 @@ $filename           = "items_to_delete.csv"
 
 # Valid Artifact Types. Note that the following assumes
 # Standard PI Types of Theme, Feature, and Initiative.
-# If user has custom PI Types, the following list will need to be
-# Customized to user environment
+# If user has custom PI Types, _or_ has custom FormattedID's, then
+# the following list will need to be Customized to user environment
 $standard_types = ["US", "DE", "TA", "TC"]
 $pi_types = ["T", "I", "F"]
 
